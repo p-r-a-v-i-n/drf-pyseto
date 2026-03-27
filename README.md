@@ -2,6 +2,8 @@
 
 Simple PASETO (v4.local) authentication for Django REST Framework using `pyseto`.
 
+Targeted for Django 6.x and Python 3.12+.
+
 ## Install
 
 ```bash
