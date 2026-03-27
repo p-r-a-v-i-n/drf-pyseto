@@ -38,7 +38,7 @@ def _encode_paseto(key_bytes: bytes, payload: Dict[str, Any]) -> str:
 def _decode_paseto(key_bytes: bytes, token: str) -> Dict[str, Any]:
     key = _get_paseto_key(key_bytes)
     try:
-        decoded = pyseto.decode(key, token, deserializer=json)
+        decoded = pyseto.decode(key, token)
     except TypeError:
         decoded = pyseto.decode(key, token)
 
