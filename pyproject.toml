@@ -34,6 +34,7 @@ dependencies = [
 test = [
   "pytest>=7.4",
   "pytest-django>=4.7",
+  "tox>=4.15",
 ]
 
 [tool.setuptools]
