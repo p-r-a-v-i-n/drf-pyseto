@@ -2,7 +2,7 @@ import pytest
 from django.core.exceptions import ImproperlyConfigured
 from django.test import override_settings
 
-from drf_pyseto.tokens import create_token, decode_token
+from drf_pyseto.tokens import LEEWAY_SECONDS, create_token, decode_token
 
 
 @pytest.mark.django_db
@@ -15,7 +15,7 @@ def test_valid_access_token_decodes():
 
 @pytest.mark.django_db
 def test_expired_token_rejected():
-    token = create_token(user_id=1, token_type="access", lifetime_seconds=-1)
+    token = create_token(user_id=1, token_type="access", lifetime_seconds=-(LEEWAY_SECONDS + 1))
     with pytest.raises(ImproperlyConfigured):
         decode_token(token)
 
