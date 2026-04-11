@@ -16,7 +16,9 @@ class TokenObtainPairView(APIView):
         return get_settings().auth_header_type
 
     def post(self, request, *args, **kwargs):
-        serializer = TokenObtainPairSerializer(data=request.data, context={"request": request})
+        serializer = TokenObtainPairSerializer(
+            data=request.data, context={"request": request}
+        )
         serializer.is_valid(raise_exception=True)
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
@@ -29,6 +31,8 @@ class TokenRefreshView(APIView):
         return get_settings().auth_header_type
 
     def post(self, request, *args, **kwargs):
-        serializer = TokenRefreshSerializer(data=request.data, context={"request": request})
+        serializer = TokenRefreshSerializer(
+            data=request.data, context={"request": request}
+        )
         serializer.is_valid(raise_exception=True)
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
