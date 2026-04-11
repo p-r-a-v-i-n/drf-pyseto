@@ -53,6 +53,7 @@ docs = [
 packages = ["drf_pyseto"]
 
 [tool.pytest.ini_options]
+pythonpath = "."
 DJANGO_SETTINGS_MODULE = "tests.settings"
 python_files = ["test_*.py"]
 addopts = "-q"

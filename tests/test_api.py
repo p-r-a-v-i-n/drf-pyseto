@@ -1,5 +1,6 @@
 import pytest
 from django.contrib.auth import get_user_model
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.test import APIClient, APIRequestFactory
 
 from drf_pyseto.authentication import PASETOAuthentication
@@ -44,8 +45,46 @@ def test_refresh_token_rejected_by_authentication():
     request = factory.get("/protected/", HTTP_AUTHORIZATION=f"Bearer {refresh}")
     auth = PASETOAuthentication()
 
-    with pytest.raises(Exception):
+    with pytest.raises(AuthenticationFailed, match="Invalid token type"):
         auth.authenticate(request)
+
+
+@pytest.mark.django_db
+def test_missing_auth_header():
+    factory = APIRequestFactory()
+    request = factory.get("/protected/")
+    auth = PASETOAuthentication()
+
+    assert auth.authenticate(request) is None
+
+
+@pytest.mark.django_db
+def test_invalid_auth_header_format():
+    user = get_user_model().objects.create_user(username="eve", password="password")
+    access = create_access_token(user.id)
+
+    factory = APIRequestFactory()
+    request = factory.get("/protected/", HTTP_AUTHORIZATION=f"Bearer {access} extra")
+    auth = PASETOAuthentication()
+
+    with pytest.raises(
+        AuthenticationFailed, match="Token string should not contain spaces"
+    ):
+        auth.authenticate(request)
+
+
+@pytest.mark.django_db
+def test_missing_token_data():
+    client = APIClient()
+    res = client.post("/token/", {"username": "missingpass"}, format="json")
+    assert res.status_code == 400
+
+
+@pytest.mark.django_db
+def test_missing_refresh_data():
+    client = APIClient()
+    res = client.post("/token/refresh/", {}, format="json")
+    assert res.status_code == 400
 
 
 @pytest.mark.django_db
