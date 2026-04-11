@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "drf-pyseto"
-version = "0.1.0"
+version = "0.1.1"
 description = "Django REST Framework authentication using PASETO (pyseto)"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -12,7 +12,7 @@ authors = [{ name = "Pravin" }]
 license = { text = "MIT" }
 keywords = ["django", "drf", "paseto", "pyseto", "auth"]
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 3 - Stable",
   "Environment :: Web Environment",
   "Framework :: Django",
   "Framework :: Django :: 4.2",
