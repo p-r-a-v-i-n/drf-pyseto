@@ -3,11 +3,11 @@ from __future__ import annotations
 from typing import Optional, Tuple
 
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ImproperlyConfigured
 from rest_framework.authentication import BaseAuthentication, get_authorization_header
 from rest_framework.exceptions import AuthenticationFailed
 
 from .conf import get_settings
+from .exceptions import PASETOError
 from .tokens import decode_token
 
 
@@ -33,7 +33,7 @@ class PASETOAuthentication(BaseAuthentication):
         token = auth[1].decode("utf-8")
         try:
             payload = decode_token(token)
-        except ImproperlyConfigured as exc:
+        except PASETOError as exc:
             raise AuthenticationFailed(str(exc)) from exc
         except Exception as exc:
             raise AuthenticationFailed("Invalid token") from exc

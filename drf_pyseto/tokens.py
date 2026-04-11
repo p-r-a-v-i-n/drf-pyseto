@@ -5,9 +5,9 @@ import time
 from typing import Any, Dict
 
 import pyseto
-from django.core.exceptions import ImproperlyConfigured
 
 from .conf import get_settings
+from .exceptions import PASETOError
 
 ALLOWED_TYPES = {"access", "refresh"}
 LEEWAY_SECONDS = 30
@@ -51,7 +51,7 @@ def _decode_paseto(key_bytes: bytes, token: str) -> Dict[str, Any]:
         payload = json.loads(payload)
 
     if not isinstance(payload, dict):
-        raise ImproperlyConfigured("Decoded PASETO payload must be a JSON object")
+        raise PASETOError("Decoded PASETO payload must be a JSON object")
     return payload
 
 
@@ -59,19 +59,19 @@ def _validate_payload(payload: Dict[str, Any]) -> None:
     settings = get_settings()
     token_type = payload.get(settings.token_type_claim)
     if token_type not in ALLOWED_TYPES:
-        raise ImproperlyConfigured("Invalid token type claim")
+        raise PASETOError("Invalid token type claim")
 
     exp = payload.get("exp")
     if not isinstance(exp, int):
-        raise ImproperlyConfigured("Token exp must be an int timestamp")
+        raise PASETOError("Token exp must be an int timestamp")
     if exp < (_now() - LEEWAY_SECONDS):
-        raise ImproperlyConfigured("Token has expired")
+        raise PASETOError("Token has expired")
 
 
 def create_token(user_id: Any, token_type: str, lifetime_seconds: int) -> str:
     settings = get_settings()
     if token_type not in ALLOWED_TYPES:
-        raise ImproperlyConfigured("Token type must be 'access' or 'refresh'")
+        raise PASETOError("Token type must be 'access' or 'refresh'")
 
     issued_at = _now()
     payload = {
@@ -104,8 +104,8 @@ def decode_token(token: str) -> Dict[str, Any]:
     _validate_payload(payload)
 
     if settings.issuer and payload.get("iss") != settings.issuer:
-        raise ImproperlyConfigured("Invalid token issuer")
+        raise PASETOError("Invalid token issuer")
     if settings.audience and payload.get("aud") != settings.audience:
-        raise ImproperlyConfigured("Invalid token audience")
+        raise PASETOError("Invalid token audience")
 
     return payload
