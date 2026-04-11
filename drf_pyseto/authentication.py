@@ -22,9 +22,13 @@ class PASETOAuthentication(BaseAuthentication):
             return None
 
         if len(auth) == 1:
-            raise AuthenticationFailed("Invalid Authorization header. No credentials provided.")
+            raise AuthenticationFailed(
+                "Invalid Authorization header. No credentials provided."
+            )
         if len(auth) > 2:
-            raise AuthenticationFailed("Invalid Authorization header. Token string should not contain spaces.")
+            raise AuthenticationFailed(
+                "Invalid Authorization header. Token string should not contain spaces."
+            )
 
         token = auth[1].decode("utf-8")
         try:

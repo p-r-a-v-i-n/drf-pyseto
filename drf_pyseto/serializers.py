@@ -15,7 +15,11 @@ class TokenObtainPairSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         request = self.context.get("request")
-        user = authenticate(request=request, username=attrs.get("username"), password=attrs.get("password"))
+        user = authenticate(
+            request=request,
+            username=attrs.get("username"),
+            password=attrs.get("password"),
+        )
         if user is None:
             raise AuthenticationFailed("Invalid credentials")
         if not user.is_active:
@@ -23,7 +27,9 @@ class TokenObtainPairSerializer(serializers.Serializer):
 
         return {
             "access": create_access_token(getattr(user, get_settings().user_id_field)),
-            "refresh": create_refresh_token(getattr(user, get_settings().user_id_field)),
+            "refresh": create_refresh_token(
+                getattr(user, get_settings().user_id_field)
+            ),
         }
 
 

@@ -15,7 +15,9 @@ def test_valid_access_token_decodes():
 
 @pytest.mark.django_db
 def test_expired_token_rejected():
-    token = create_token(user_id=1, token_type="access", lifetime_seconds=-(LEEWAY_SECONDS + 1))
+    token = create_token(
+        user_id=1, token_type="access", lifetime_seconds=-(LEEWAY_SECONDS + 1)
+    )
     with pytest.raises(ImproperlyConfigured):
         decode_token(token)
 

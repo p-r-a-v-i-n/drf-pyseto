@@ -8,15 +8,19 @@ from drf_pyseto.tokens import create_access_token, create_refresh_token
 
 @pytest.mark.django_db
 def test_token_obtain_and_refresh_flow():
-    user = get_user_model().objects.create_user(username="alice", password="password")
+    get_user_model().objects.create_user(username="alice", password="password")
     client = APIClient()
 
-    res = client.post("/token/", {"username": "alice", "password": "password"}, format="json")
+    res = client.post(
+        "/token/", {"username": "alice", "password": "password"}, format="json"
+    )
     assert res.status_code == 200
     assert "access" in res.data
     assert "refresh" in res.data
 
-    res2 = client.post("/token/refresh/", {"refresh": res.data["refresh"]}, format="json")
+    res2 = client.post(
+        "/token/refresh/", {"refresh": res.data["refresh"]}, format="json"
+    )
     assert res2.status_code == 200
     assert "access" in res2.data
 
@@ -25,7 +29,9 @@ def test_token_obtain_and_refresh_flow():
 def test_invalid_credentials():
     get_user_model().objects.create_user(username="bob", password="password")
     client = APIClient()
-    res = client.post("/token/", {"username": "bob", "password": "wrong"}, format="json")
+    res = client.post(
+        "/token/", {"username": "bob", "password": "wrong"}, format="json"
+    )
     assert res.status_code == 401
 
 
