@@ -3,9 +3,16 @@
 [![PyPI version](https://img.shields.io/pypi/v/drf-pyseto.svg)](https://pypi.org/project/drf-pyseto/)
 [![Python versions](https://img.shields.io/pypi/pyversions/drf-pyseto.svg)](https://pypi.org/project/drf-pyseto/)
 [![Django versions](https://img.shields.io/pypi/djversions/drf-pyseto.svg)](https://pypi.org/project/drf-pyseto/)
+[![Documentation](https://img.shields.io/badge/docs-GitHub_Pages-blue.svg)](https://p-r-a-v-i-n.github.io/drf-pyseto/)
 [![License](https://img.shields.io/github/license/p-r-a-v-i-n/drf-pyseto.svg)](https://github.com/p-r-a-v-i-n/drf-pyseto/blob/main/LICENSE)
 
 A simple, secure, and modern [PASETO (Platform-Agnostic Security Tokens)](https://paseto.io/) authentication backend for Django REST Framework (DRF), powered by [`pyseto`](https://github.com/dajiaji/pyseto).
+
+---
+
+**[📖 Read the Full Documentation Here](https://p-r-a-v-i-n.github.io/drf-pyseto/)**
+
+---
 
 `drf-pyseto` utilizes the **v4.local** (symmetric encryption) PASETO specification, providing a more secure alternative to JWTs by preventing cryptographic agility attacks and minimizing misconfigurations.
 

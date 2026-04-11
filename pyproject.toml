@@ -45,6 +45,9 @@ test = [
   "pytest-django>=4.7",
   "tox>=4.15",
 ]
+docs = [
+  "mkdocs-material>=9.0",
+]
 
 [tool.setuptools]
 packages = ["drf_pyseto"]
